@@ -21,8 +21,12 @@ public class TestUser {
 		user.setAge(19);
 		
 //		userService.add(user);
-		User user2=userService.select("tom");
-		System.out.println(user2);
+		User user2=userService.select("zhangsan");
+		if(user2!=null) {
+			System.out.println(user2);
+		}else {
+			System.out.println("未查询到相关信息，请确认您输入的用户名是否正确");
+		}
 		
 		
 	}
