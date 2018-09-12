@@ -60,7 +60,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		final UserService userService =(UserService) context.getBean("userService");
 		final User user=(User) context.getBean("user");
 		
-		final JFrame jf=new JFrame("操作窗体");
+		final JFrame jf=new JFrame("添加学生-窗体");
 		if(e.getSource()==addUser) {
 			System.out.println("点击了添加学生按钮！");
 			JLabel name=new JLabel("请输入用户名：");
@@ -86,7 +86,7 @@ public class MainFrame extends JFrame implements ActionListener{
 				}
 			});
 			
-			jf.setSize(300, 200);
+			jf.setSize(250, 130);
 			jf.setLayout(new GridLayout(3, 2));
 			jf.add(name);
 			jf.add(getName);
