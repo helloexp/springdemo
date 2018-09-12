@@ -17,9 +17,13 @@ public class TestUser {
 		System.out.println("配置文件提供的user信息--->"+user);
 		UserService userService=(UserService) context.getBean("userService");
 		
-		user.setName("zhangsan");
-		user.setAge(18);
-		userService.add(user);
+		user.setName("lisi");
+		user.setAge(19);
+		
+//		userService.add(user);
+		User user2=userService.select("tom");
+		System.out.println(user2);
+		
 		
 	}
 
