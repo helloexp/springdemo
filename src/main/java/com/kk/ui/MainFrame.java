@@ -1,5 +1,6 @@
 package com.kk.ui;
 
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.springframework.context.ApplicationContext;
@@ -99,7 +101,35 @@ public class MainFrame extends JFrame implements ActionListener{
 			jf.setVisible(true);
 		}else if(e.getSource()==selectUser) {
 			System.out.println("点击了查询学生按钮！");
+			JFrame jfSelect=new JFrame("查询学生-窗体");
+			JButton selectBtn=new JButton("查询");
+			JLabel inputJl=new JLabel("请输入要查询的用户名");
+			final JTextField nameJtf=new JTextField(20);
+			final JTextArea outJta=new JTextArea(1,15);
 			
+			
+			selectBtn.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					User userSelect=userService.select(nameJtf.getText().trim());
+					System.out.println();
+					System.out.println(userSelect);
+					outJta.setText(userSelect+"");
+				}
+			});
+			
+			
+			
+			jfSelect.add(inputJl);
+			jfSelect.add(nameJtf);
+			jfSelect.add(selectBtn);
+			jfSelect.add(outJta);
+			
+			jfSelect.setSize(300, 140);
+			jfSelect.setLayout(new FlowLayout());
+			jfSelect.setLocationRelativeTo(null);
+			jfSelect.setVisible(true);
+			jfSelect.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 		}else if(e.getSource()==updateUser) {
 			System.out.println("点击了修改学生按钮！");
