@@ -37,8 +37,13 @@ public class TestController {
 	public String add(HttpServletRequest request) throws UnsupportedEncodingException {
 		request.setCharacterEncoding("utf-8");
 		userServivce=new UserService();
-		
-		int id =Integer.parseInt(request.getParameter("id"));
+		int id=0;
+		try {
+			id =Integer.parseInt(request.getParameter("id"));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+			return "result";
+		}
 		byte[] b=request.getParameter("name").getBytes("utf-8");
 		
 		String name=new String(b,"utf-8");

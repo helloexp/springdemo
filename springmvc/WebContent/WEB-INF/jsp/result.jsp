@@ -10,7 +10,7 @@
 <body>
 	<div>
 		<table>
-			<p>添加用户表单</p>
+			<p>添加英雄表单</p>
 			<form method="post"	action="">
 				id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="id"><br>
 				name<input type="text" name="name"><br>
