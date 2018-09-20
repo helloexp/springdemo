@@ -1,18 +1,29 @@
 package com.kk;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kk.bean.User;
 import com.kk.services.UserService;
+import com.sun.glass.ui.CommonDialogs.Type;
 
 @Controller
 @RequestMapping("/test")
@@ -100,5 +111,61 @@ public class TestController {
 		
 		
 		return "login";
+	}
+	
+	@RequestMapping("mvtest")
+	public ModelAndView mvtest() {
+		List<User> list=new ArrayList<>();
+		ModelAndView mv=new ModelAndView("test");
+		User zhangsan=new User(1001,"zhangsan",30);
+		User lisi=new User(1002,"lisi",20);
+		User zhaoliu=new User(1003,"zhaoliu",38);
+		User wangwu=new User(1004,"wangwu",18);
+		
+		list.add(zhangsan);
+		list.add(lisi);
+		list.add(zhaoliu);
+		list.add(wangwu);
+		
+		mv.addObject("list", list);
+		mv.addObject("user", zhangsan);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="/upload",method=RequestMethod.POST)
+	public String upload(HttpServletRequest request) {
+		MultipartHttpServletRequest mreq=(MultipartHttpServletRequest) request;
+		MultipartFile file=mreq.getFile("filename");
+		
+		String filename=file.getOriginalFilename();
+		System.out.println("上传文件名："+filename);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+		try {
+			String basepath=request.getSession().getServletContext().getRealPath("/")+"upload/";
+			String randomFileName=sdf.format(new Date())+filename.substring(filename.lastIndexOf("."));
+			String type=filename.substring(filename.lastIndexOf('.')+1, filename.length());
+			type=type.toUpperCase();
+			System.out.println("文件类型："+type);
+			if(!(type.equals("JPG")||type.equals("GIF")||type.equals("PNG")||type.equals("JPEG"))) {
+				request.setAttribute("msg", "文件类型错误，请重新选择");
+				return "upload";
+			}
+			
+			String fileTosave=basepath+randomFileName;
+			
+			System.out.println(fileTosave);
+			FileOutputStream fos=new FileOutputStream(fileTosave);
+			fos.write(file.getBytes());
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		request.setAttribute("msg", "文件："+filename+" 上传成功");
+		return "upload";
 	}
 }
